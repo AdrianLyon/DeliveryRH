@@ -49,9 +49,9 @@ jobs:
       - name: Deploy to Environment
         run: |
           if [ "${{ github.ref }}" == "refs/heads/staging" ]; then
-            echo "🚀 Deploying to Staging..."
+            echo "Deploying to Staging..."
             # ./gradlew deployToStaging
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "🔥 Deploying to Production..."
+            echo " Deploying to Production..."
             # ./gradlew deployToProd
           fi
