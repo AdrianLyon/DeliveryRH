@@ -1,12 +1,17 @@
 package com.deliveryrh.deliveryrh.featureEmployee.models;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.deliveryrh.deliveryrh.featureContract.models.Contract;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -40,30 +45,36 @@ public class Employee {
     @Column(name = "salary", nullable = false)
     @NotNull(message = "Salary cannot be null")
     @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be greater than zero")
-    private Double salary;
+    private BigDecimal salary;
 
     @Column(name = "hireDate", nullable = false)
     @NotNull(message = "Hire date cannot be null")
     private LocalDate hireDate;
 
     @Column(name = "department", nullable = false)
-    @NotNull(message = "department date cannot be null")
+    @NotNull(message = "Department cannot be null")
     private String department;
 
     @Column(name = "job", nullable = false)
-    @NotNull(message = "Job date cannot be null")
+    @NotNull(message = "Job cannot be null")
     private String job;
+
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Contract contract;
 
     public Employee(){}
 
-    public Employee(Long id, @NotNull(message = "fullName cannot be null") String fullName,
-            @NotNull(message = "RFC cannot be null") @Pattern(regexp = "[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}", message = "Invalid RFC format") String rfc,
-            @NotNull(message = "CURP cannot be null") @Pattern(regexp = "[A-Z][AEIOU][A-Z]{2}\\d{6}[HM][A-Z]{5}[A-Z0-9]{2}", message = "Invalid CURP format") String curp,
-            @NotNull(message = "NSS cannot be null") String nss,
-            @NotNull(message = "Salary cannot be null") @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be greater than zero") Double salary,
-            @NotNull(message = "Hire date cannot be null") LocalDate hireDate,
-            @NotNull(message = "department date cannot be null") String department,
-            @NotNull(message = "Job date cannot be null") String job) {
+    public Employee(
+            Long id,
+            String fullName,
+            String rfc,
+            String curp,
+            String nss,
+            BigDecimal salary,
+            LocalDate hireDate,
+            String department,
+            String job,
+            Contract contract) {
         this.id = id;
         this.fullName = fullName;
         this.rfc = rfc;
@@ -73,6 +84,7 @@ public class Employee {
         this.hireDate = hireDate;
         this.department = department;
         this.job = job;
+        this.contract = contract;
     }
 
     public Long getId() {
@@ -115,11 +127,11 @@ public class Employee {
         this.nss = nss;
     }
 
-    public Double getSalary() {
+    public BigDecimal getSalary() {
         return salary;
     }
 
-    public void setSalary(Double salary) {
+    public void setSalary(BigDecimal salary) {
         this.salary = salary;
     }
 
@@ -147,5 +159,11 @@ public class Employee {
         this.job = job;
     }
 
-    
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
 }
